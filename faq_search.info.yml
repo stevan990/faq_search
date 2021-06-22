@@ -1,0 +1,9 @@
+name: 'FAQ Search'
+type: module
+description: 'Search functionality used for Questions and Answers page.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Custom'
+dependencies:
+  - search_api
+  - search_api_autocomplete

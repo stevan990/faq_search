@@ -1,0 +1,7 @@
+faq_search:
+  version: 1.x
+  js:
+    assets/js/scripts.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

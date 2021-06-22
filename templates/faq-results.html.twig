@@ -1,0 +1,60 @@
+{#
+ * Available variables:
+ * - sidebar: The ID of the block implementation.
+ * - content: The ID of the block implementation.
+ * - form: The ID of the block implementation.
+ * - config: The ID of the block implementation.
+ */
+#}
+<div class="container">
+<div class="faq-search--block-content row">
+  <div class="faq-search--block-content--left col-sm-12 col-lg-3">
+    <div>
+      <h3>{{ config.section_sidebar_title }}</h3>
+      <p>{{ config.section_sidebar_body }}</p>
+    </div>
+    <div class="faq-search--sidebar">
+        {% for item in sidebar %}
+          {% if sidebar.0.class == item.class %}
+            <div class="search-menu-item {{ item.class }} selected">
+              <div class="faq-search--sidebar--conetnt">
+                <h4 class="faq-search--content--category">{{ item.category }}</h4>
+              </div>
+            </div>
+          {% else %}
+            <div class="search-menu-item {{ item.class }}">
+              <div class="faq-search--sidebar--conetnt">
+                <h4 class="faq-search--content--category">{{ item.category }}</h4>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+  </div>
+  <div class="faq-search--block-content--right col-sm-12 col-lg-9">
+    <h1>{{ config.section_content_title }}</h1>
+    <div class="faq-search--form">
+      {{ form }}
+    </div>
+    <div class="faq-search--content">
+        {% for item in content %}
+          {% if content.0.class == item.class %}
+            <div class="search-content-item {{ item.class }}">
+              <div class="faq-search--content--item">
+                <h3 class="faq-search--content--question">{{ item.question }}</h3>
+                <div class="faq-search--content--answer" style="display: none">{{ item.answer|raw }}</div>
+              </div>
+            </div>
+          {% else %}
+            <div class="search-content-item {{ item.class }}" style="display: none">
+              <div class="faq-search--content--item">
+                <h3 class="faq-search--content--question">{{ item.question }}</h3>
+                <div class="faq-search--content--answer" style="display: none">{{ item.answer|raw }}</div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+  </div>
+</div>
+</div>

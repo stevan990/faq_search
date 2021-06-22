@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Contains faq_search.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function faq_search_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the faq_search module.
+    case 'help.page.faq_search':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Search functionality used for Questions and Answers page.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the search_block_form form.
+ */
+function faq_search_form_faq_search_form_alter(&$form, FormStateInterface $form_state, &$variables) {
+  // NB so that these are not added to the get query params.
+  $form['form_build_id']['#access'] = FALSE;
+  $form['form_token']['#access'] = FALSE;
+  $form['form_id']['#access'] = FALSE;
+  $form['#attached']['library'][] = 'faq_search/faq_search';
+}
+
+/**
+ * Implements hook_search_api_autocomplete_suggestions_alter().
+ */
+function faq_search_search_api_autocomplete_suggestions_alter(array &$suggestions, array $alter_params) {
+  if ($alter_params['search']->id() == 'faq_search') {
+
+    foreach ($suggestions as $key => &$suggestion) {
+
+      $options = $suggestion->getUrl()->getOptions();
+      $node = $options['entity'];
+
+      $suggestion->setSuggestedKeys($node->label());
+      $suggestion->setLabel($node->label());
+      // Turn off url so that value becomes suggested key, rather than label.
+      // Otherwise, the output of the label is used as the value.
+      $suggestion->setUrl(NULL);
+    }
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function faq_search_theme($existing, $type, $theme, $path) {
+  return [
+    'faq_results' => [
+      'variables' => [
+        'sidebar' => NULL,
+        'content' => NULL,
+        'form' => NULL,
+        'config' => NULL,
+      ],
+    ],
+  ];
+}
